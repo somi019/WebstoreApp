@@ -28,7 +28,7 @@ namespace Catalog.API.Controllers
         //    _context.Products.FindSync<Product>();
         //}
 
-        IProductRepository _repository;
+        private readonly IProductRepository _repository;
 
         public CatalogController(IProductRepository repository)
         {
@@ -50,5 +50,34 @@ namespace Catalog.API.Controllers
             // sve iz ove klase ControllerBase se odnosi na statusne kodove
 
         }
+        [HttpGet("{id}",Name = "GetProduct")] // /api/v1/Catalog/{id} -> /api/v1/Catalog/12345 
+        [ProducesResponseType(typeof(Product),StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Product), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<Product>> GetProductById(string id)
+        {
+            var product = await _repository.GetProduct(id);
+            if(product == null)
+            {
+                return NotFound(null);
+            }
+            return Ok(product);
+        }
+        [Route("[action]/{category}")]
+        [HttpGet] // /api/v1/Catalog/GetProductByCategory/{category}
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<Product>> GetProductByCategory(string category)
+        {
+            var product = await _repository.GetProductsByCategory(category);
+            return Ok(product);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(IEnumerable<Product>), StatusCodes.Status201Created)]
+        public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
+        { 
+            await _repository.CreateProduct(product);
+            return CreatedAtRoute("GetProduct", new {id = product.Id}, product);
+        }
+            
     }
 }
