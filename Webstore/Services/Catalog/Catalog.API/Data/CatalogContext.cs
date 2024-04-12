@@ -14,6 +14,9 @@ namespace Catalog.API.Data
             Products = database.GetCollection<Product>("Products");
             // povezali smo se na bazu podataka i uzeli jednu kolekciju podataka iz nje
             CatalogContextSeed.SeedData(Products);
+            // ako zelis da imas neke podrazumevane proizvode, seedujes ih
+            // sluzi nam cisto da bi imali nesto da dohvatimo radi testiranja API-ja
+
         }
         public IMongoCollection<Product> Products { get; }
     }
