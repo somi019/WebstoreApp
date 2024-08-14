@@ -5,9 +5,9 @@ namespace Catalog.API.Data
 {
     public class CatalogContext : ICatalogContext
     {
-        public CatalogContext() {
+        public CatalogContext(IConfiguration configuration) {
             // Ovaj kontekst je zaduzen za povezivanje sa bazom podataka
-            var client = new MongoClient("mongodb://localhost:27017");
+            var client = new MongoClient(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
             // var isto kao auto u cpp, automatska dedukcija tipa
             var database = client.GetDatabase("CatalogDB");
 
