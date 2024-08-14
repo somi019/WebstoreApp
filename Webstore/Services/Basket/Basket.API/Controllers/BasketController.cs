@@ -6,7 +6,7 @@ namespace Basket.API.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class BasketController : Controller
+    public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
 
@@ -14,6 +14,7 @@ namespace Basket.API.Controllers
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
         }
+
         [HttpGet("{username}")]
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCart>> GetBasket(string username)
@@ -21,14 +22,15 @@ namespace Basket.API.Controllers
             var basket =  await _repository.GetBasket(username);
             return Ok(basket ?? new ShoppingCart(username));
         }
+
         [HttpPut]
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
-        
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket) 
         {
             return Ok(await _repository.UpdateBasket(basket));
             
         }
+
         [HttpDelete("{username}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
 

@@ -1,11 +1,23 @@
+using Basket.API.Repositories;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddStackExchangeRedisCache(options => 
+{
+    // nije dobra praksa stavljati sve u string, najbolje je sve staviti u konfiguracione promenljive
+    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString"); 
+});
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" });
+});
 
 var app = builder.Build();
 

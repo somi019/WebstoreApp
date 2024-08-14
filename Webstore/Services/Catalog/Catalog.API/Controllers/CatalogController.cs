@@ -13,9 +13,9 @@ namespace Catalog.API.Controllers
     {
         //////// OVDE NIJE U REDU :
         ////////    kad imamo neki projekat koji ima SQLServer i sef kaze sad mi treba mongo
-        ////////    ovde ne treba da menjamo samo klase za mongo (umesto njih mecemo klase SQLSrw)
+        ////////    ovde ne treba da menjamo samo klase za mongo (umesto njih da mecemo klase SQLSrw)
         ////////    kontroler sad zavisi direktno od mongo-a
-        ////////    treba da menjamo impleemntaciju kontrolera da bi promenili bazu, to nam ne treba
+        ////////    treba da menjamo implementaciju kontrolera da bi promenili bazu, to nam ne treba
         ////////    ako ja ocu da menjam bazu, kontrolera treba da bude briga za to
         ////////    treba da napravimo apstrakciju za find
         //ICatalogContext _context;
