@@ -50,7 +50,7 @@ namespace Catalog.API.Controllers
             // sve iz ove klase ControllerBase se odnosi na statusne kodove
 
         }
-        [HttpGet("{id}",Name = "GetProduct")] // /api/v1/Catalog/{id} -> /api/v1/Catalog/12345 
+        [HttpGet("{id:length(24)}",Name = "GetProduct")] // /api/v1/Catalog/{id} -> /api/v1/Catalog/12345 
         [ProducesResponseType(typeof(Product),StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(Product), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<Product>> GetProductById(string id)
