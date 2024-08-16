@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Discount.Common.Data
 {
-    internal class CouponContext : ICouponContext
+    public class CouponContext : ICouponContext
     {
         private readonly IConfiguration _configuration;
 
@@ -20,6 +20,7 @@ namespace Discount.Common.Data
         public NpgsqlConnection GetConnection()
         {
             return new NpgsqlConnection(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+            // svaki mikroservis koji koristi Discount.Common treba da ima svoj DatabaseSettings i ConnectionString u njemu u appsettings.Develpoment.json fajlu
         }
     }
 }

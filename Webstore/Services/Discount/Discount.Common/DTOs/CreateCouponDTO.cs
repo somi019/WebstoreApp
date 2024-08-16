@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Discount.Common.DTOs
 {
-    internal class CreateCouponDTO : BaseCouponDTO
+    public class CreateCouponDTO : BaseCouponDTO
     {
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Discount.Common.Data
 {
-    internal interface ICouponContext
+    public interface ICouponContext
     {
         NpgsqlConnection GetConnection();
     }

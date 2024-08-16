@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Discount.Common.Repositories
 {
-    internal class CouponRepository : ICouponRepository
+    public class CouponRepository : ICouponRepository
     {
         private readonly ICouponContext _couponContext;
         private readonly IMapper _mapper;
