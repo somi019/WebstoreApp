@@ -5,6 +5,7 @@ using Discount.Common.DTOs;
 using Discount.Common.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,23 +39,64 @@ namespace Discount.Common.Repositories
             // imaju sve iste atribute
         }
 
-        public Task<bool> CreateDiscount(CreateCouponDTO couponDTO)
+        public async Task<bool> CreateDiscount(CreateCouponDTO couponDTO)
         {
-            throw new NotImplementedException();
+            using var connection = _couponContext.GetConnection();
+            var affected = await connection.ExecuteAsync(
+                "INSERT INTO Coupon (ProductName,Description,Amount) VALUES (@ProductName,@Description,@Amount)",
+                new { ProductName = couponDTO.ProductName, Description = couponDTO.Description, Amount = couponDTO.Amount }
+                );
+            // popunimo placeholdere sa atributima anonimnog objekta
+
+            return affected != 0;
+
         }
-        public Task<bool> UpdateDiscount(UpdateCouponDTO couponDTO)
+        public async Task<bool> UpdateDiscount(UpdateCouponDTO couponDTO)
         {
-            throw new NotImplementedException();
+            using var connection = _couponContext.GetConnection();
+            var affected = await connection.ExecuteAsync(
+                "UPDATE Coupon SET ProductName=@ProductName,Description =@Description,Amount=@Amount WHERE Id = @Id",
+                new { couponDTO.ProductName,  couponDTO.Description, couponDTO.Amount, couponDTO.Id }
+                );
+
+            return affected != 0;
         }
 
-        public Task<bool> DeleteDiscount(string productName)
+        public async Task<bool> DeleteDiscount(string productName)
         {
-            throw new NotImplementedException();
+            using var connection = _couponContext.GetConnection();
+            var affected = await connection.ExecuteAsync(
+                "DELETE FROM Coupon WHERE ProductName=@ProductName",
+                new { ProductName = productName}
+                );
+
+            return affected != 0;
         }
 
-        public Task<IEnumerable<CouponDTO>> GetRandomDiscounts(int numberOfDisconuts)
+        public async Task<IEnumerable<CouponDTO>> GetRandomDiscounts(int numberOfDisconuts)
         {
-            throw new NotImplementedException();
+            // LINQ deo standardne biblioteke .NET-a koji radi sa kolekcijama
+
+            using var connection = _couponContext.GetConnection();
+
+            var allCoupons = await connection.QueryAsync<Coupon>("SELECT * FROM Coupon");
+
+            if (allCoupons.Count() < numberOfDisconuts) {
+                return _mapper.Map<IEnumerable<CouponDTO>>(allCoupons);
+                // za mapper konverziju mora da vazi : mora da imaju polja koja se identicno zovu i kojima moze da se pristupi javno
+                // dobro je koristiti ga za stvari za koje znas kako se preslikavaju jedna u drugu
+            }
+
+            var r = new Random();
+            return _mapper.Map<IEnumerable<CouponDTO>>(allCoupons
+                .Select(c => new { Number = r.Next(), Item = c })
+                .OrderBy(obj=> obj.Number)
+                .Select(obj=>obj.Item)
+                .Take(numberOfDisconuts));
+            // dali smo svakom po random broj sortirali po broju, sklonili taj broj i uzeli prvih numberOfDiscounts kupona
+
+
+     
         }
 
 
