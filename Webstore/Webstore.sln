@@ -19,7 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Discount", "Discount", "{1F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discount.Common", "Services\Discount\Discount.Common\Discount.Common.csproj", "{1D29AFBB-30BD-48DE-ABDD-9479227B7F81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discount.API", "Services\Discount\Discount.API\Discount.API.csproj", "{7F67C4ED-2210-43F2-BF95-F47834B75278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discount.API", "Services\Discount\Discount.API\Discount.API.csproj", "{7F67C4ED-2210-43F2-BF95-F47834B75278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discount.GRPC", "Services\Discount\Discount.GRPC\Discount.GRPC.csproj", "{3C2237B9-4F39-48EA-8B5E-8C3EFF6F23E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{7F67C4ED-2210-43F2-BF95-F47834B75278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F67C4ED-2210-43F2-BF95-F47834B75278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F67C4ED-2210-43F2-BF95-F47834B75278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C2237B9-4F39-48EA-8B5E-8C3EFF6F23E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C2237B9-4F39-48EA-8B5E-8C3EFF6F23E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C2237B9-4F39-48EA-8B5E-8C3EFF6F23E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C2237B9-4F39-48EA-8B5E-8C3EFF6F23E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,6 +65,7 @@ Global
 		{1FEA1DB2-FA99-4583-840D-B510C4FBD415} = {2A6CD981-596F-4BDA-A896-FF7FABF212F0}
 		{1D29AFBB-30BD-48DE-ABDD-9479227B7F81} = {1FEA1DB2-FA99-4583-840D-B510C4FBD415}
 		{7F67C4ED-2210-43F2-BF95-F47834B75278} = {1FEA1DB2-FA99-4583-840D-B510C4FBD415}
+		{3C2237B9-4F39-48EA-8B5E-8C3EFF6F23E9} = {1FEA1DB2-FA99-4583-840D-B510C4FBD415}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {06E7E4A5-25E7-47A5-9576-51882249811A}
