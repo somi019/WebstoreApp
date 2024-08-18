@@ -1,5 +1,4 @@
-using Catalog.API.Data;
-using Catalog.API.Repositories.Interfaces;
+using Discount.Common.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,14 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<ICatalogContext, CatalogContext>();
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddDiscountCommonServices();
 
 var app = builder.Build();
-
-
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
