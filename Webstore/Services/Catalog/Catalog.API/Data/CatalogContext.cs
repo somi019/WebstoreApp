@@ -19,5 +19,6 @@ namespace Catalog.API.Data
 
         }
         public IMongoCollection<Product> Products { get; }
+        // ovo je promenljiva Products
     }
 }
