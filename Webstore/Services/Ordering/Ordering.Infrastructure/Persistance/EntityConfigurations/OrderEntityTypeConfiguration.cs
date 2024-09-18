@@ -15,7 +15,7 @@ namespace Ordering.Infrastructure.Persistance.EntityConfigurations
         {
             builder.ToTable("Orders");
             builder.HasKey(o => o.Id);
-            builder.Property(o => o.Id).UseHiLo();
+            builder.Property(o => o.Id).UseHiLo("orderseq");
             // OrderItem se sastoji samo iz obicnih polja (stringovi,intovi,decimal,itd.)
             // Ali Order u sebi ima vrednosni objekat Address pored toga
             // treba reci : Order je vlasnik tog vrednosnog objekta

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace Ordering.Application.Behaviors
 {
     public class UnhandledExceptionBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+        where TRequest : IRequest<TResponse>
     {
         private readonly ILogger<UnhandledExceptionBehavior<TRequest, TResponse>> logger;
 
