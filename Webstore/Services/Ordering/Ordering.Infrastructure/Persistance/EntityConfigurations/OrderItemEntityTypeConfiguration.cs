@@ -31,7 +31,11 @@ namespace Ordering.Infrastructure.Persistance.EntityConfigurations
             // i required je, obavezna
 
             // uradi do kraja za sve Property-e
-           
+
+            builder.Property(o => o.LastModifiedBy)
+               .IsRequired(false)  // Set to false to make it nullable
+               .HasMaxLength(4000);
+
 
 
         }

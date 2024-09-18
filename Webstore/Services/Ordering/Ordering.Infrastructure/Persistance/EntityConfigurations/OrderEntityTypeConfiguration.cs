@@ -19,6 +19,12 @@ namespace Ordering.Infrastructure.Persistance.EntityConfigurations
             // OrderItem se sastoji samo iz obicnih polja (stringovi,intovi,decimal,itd.)
             // Ali Order u sebi ima vrednosni objekat Address pored toga
             // treba reci : Order je vlasnik tog vrednosnog objekta
+
+            builder.Property(o => o.LastModifiedBy)
+                .IsRequired(false)  // Set to false to make it nullable
+                .HasMaxLength(4000);
+            // LastModifiedBy ne sme da bude required. Ovo je fix.
+
             builder.OwnsOne(o => o.Address, a =>
             {
                 // adresa bi trebalo da ima neki strani kljuc da bi se znalo na koju se porudzbinu odnosi
