@@ -16,7 +16,7 @@ namespace Ordering.Application.Features.Orders.Commands.CreateOrder
                 .NotNull()
                 .MaximumLength(50).WithMessage("{Username} must not exceed 50 characters.");
 
-            RuleFor(order => order.EmailAdress)
+            RuleFor(order => order.EmailAddress)
                 .NotEmpty().WithMessage("{EmailAddress} is required.");
 
             RuleForEach(order => order.OrderItems)

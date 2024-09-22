@@ -17,7 +17,7 @@ namespace Ordering.Application.Features.Orders.Commands.CreateOrder
         public string State { get; set; }
         public string Country { get; set; }
         public string ZipCode { get; set; }
-        public string EmailAdress { get; set; }
+        public string EmailAddress { get; set; }
 
         // relevantne informacije za view iz Order
         public string BuyerId { get; set; }
