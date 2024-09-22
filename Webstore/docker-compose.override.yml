@@ -47,6 +47,14 @@ services:
         - "1433:1433"
     volumes:
         - orderdb_data:/var/opt/mssql/data
+
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+    - 5672:5672
+    - 15672:15672
+  
   catalog.api:
     container_name: catalog.api
     environment:
@@ -63,8 +71,10 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - "CacheSettings:ConnectionString=basketdb:6379"
       - "GrpcSettings:DiscountUrl=http://discount.grpc"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - basketdb
+      - rabbitmq 
       - discount.grpc
     ports:
       - "8001:80"
@@ -97,8 +107,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - "ConnectionStrings:OrderingConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=MATF12345678rs2;"
+      - "EventBusSettings:HostAddress=amqp://guest:guest@rabbitmq:5672"
     depends_on:
       - orderdb
+      - rabbitmq 
     ports:
       - "8004:80"
 
