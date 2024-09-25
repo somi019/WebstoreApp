@@ -1,13 +1,40 @@
+using EventBus.Messages.Constants;
+using MassTransit;
+using Ordering.API.EventBusConsumers;
 using Ordering.API.Extensions;
 using Ordering.Application;
 using Ordering.Infrastructure;
 using Ordering.Infrastructure.Persistance;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+
+// Automapper
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+//EventBus
+builder.Services.AddMassTransit(config =>
+{
+    config.AddConsumer<BasketCheckoutConsumer>();
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+        cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue,c =>
+        {
+            c.ConfigureConsumer<BasketCheckoutConsumer>(ctx);
+        });
+    });
+});
+// Kada servis cita sa redova poruka :
+// 1. napraviti klasu Consumer
+// 2. registrovati je u Program.cs kao consumera
+// 3. kazati koji je red poruka koji ce on pratiti da bi mu stizali eventovi
+
+builder.Services.AddMassTransitHostedService();
 
 
 // Migracija baze

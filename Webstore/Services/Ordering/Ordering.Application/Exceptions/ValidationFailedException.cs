@@ -12,7 +12,7 @@ namespace Ordering.Application.Exceptions
         public IDictionary<string, string[]> Errors { get; }
         
         public ValidationFailedException(IEnumerable<ValidationFailure> failures)
-            : base("One or more validation failures have occured.")
+            : base($"One or more validation failures have occured. {failures.FirstOrDefault().ErrorMessage}")
         {
             Errors = failures.GroupBy(f => f.PropertyName, f => f.ErrorMessage)
                 .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());

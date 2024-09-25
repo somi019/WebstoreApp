@@ -14,7 +14,7 @@ namespace Ordering.Infrastructure.Factories
     {
         public Order Create(CreateOrderCommand command)
         {
-            var order = new Order(command.BuyerId, command.BuyerUsername, new Address(command.Street, command.City, command.State, command.Country, command.ZipCode, command.EmailAdress));
+            var order = new Order(command.BuyerId, command.BuyerUsername, new Address(command.Street, command.City, command.State, command.Country, command.ZipCode, command.EmailAddress));
             foreach (var item in command.OrderItems) 
             {
                 order.AddOrderItem(item.ProductName, item.ProductId, item.PictureUrl, item.Price, item.Units);

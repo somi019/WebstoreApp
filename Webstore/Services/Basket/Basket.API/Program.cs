@@ -1,7 +1,9 @@
 using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Discount.GRPC.Protos;
+using MassTransit;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,27 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c => {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Basket.API", Version = "v1" });
 });
+
+// Automapper
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+// GetExecutingAssembly(), hvatas assembly BasketApi, automapper prodje kroz sve klase
+// i hvata sve one klase koje nasledjuju Profile i nad tim svim klasama pozvace
+// konstruktor i napravice sva mapiranja koja smo trazili
+
+
+//EventBus
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        //ctx - context, cfg - configuration
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+    });
+});
+
+builder.Services.AddMassTransitHostedService();
+
 
 var app = builder.Build();
 
