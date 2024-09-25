@@ -1,4 +1,5 @@
-﻿using IdentityServer.Entities;
+﻿using IdentityServer.Data.EntityTypeConfiguration;
+using IdentityServer.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,6 +9,12 @@ namespace IdentityServer.Data
     {
         public ApplicationContext(DbContextOptions options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new RoleConfiguration());
         }
     }
 }
