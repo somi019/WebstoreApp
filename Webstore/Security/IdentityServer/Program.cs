@@ -22,6 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// uvek ovaj redosled prvo auth pa autor
 app.UseAuthentication();
 app.UseAuthorization();
 
