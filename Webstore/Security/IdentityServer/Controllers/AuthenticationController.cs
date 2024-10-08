@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using IdentityServer.Controllers.Base;
 using IdentityServer.DTOs;
 using IdentityServer.Entities;

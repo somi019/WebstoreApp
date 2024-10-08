@@ -49,12 +49,19 @@ services:
       context: .
       dockerfile: Services/Ordering/Ordering.API/Dockerfile
 
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    build:
+      context: .
+      dockerfile: Security/IdentityServer/Dockerfile
+
 volumes:
   mongo_data:
   postgres_data:
   pgadmin_data:
   mssql_data:
   
+
 
 
 
