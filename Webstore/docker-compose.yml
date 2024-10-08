@@ -13,7 +13,7 @@ services:
   pgadmin:
     image:  dpage/pgadmin4
 
-  orderdb:
+  mssql:
     image:  mcr.microsoft.com/mssql/server:2017-latest
 
   rabbitmq:
@@ -49,12 +49,19 @@ services:
       context: .
       dockerfile: Services/Ordering/Ordering.API/Dockerfile
 
+  identityserver:
+    image: ${DOCKER_REGISTRY-}identityserver
+    build:
+      context: .
+      dockerfile: Security/IdentityServer/Dockerfile
+
 volumes:
   mongo_data:
   postgres_data:
   pgadmin_data:
-  orderdb_data:
+  mssql_data:
   
+
 
 
 

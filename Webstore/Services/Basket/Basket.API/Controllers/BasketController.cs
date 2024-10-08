@@ -5,10 +5,13 @@ using Basket.API.Repositories;
 using EventBus.Messages.Events;
 using Grpc.Core;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Basket.API.Controllers
 {
+    [Authorize(Roles ="Buyer")]
     [ApiController]
     [Route("api/v1/[controller]")]
     public class BasketController : ControllerBase
@@ -32,6 +35,14 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCart>> GetBasket(string username)
         {
+            if(User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
+            // Umesto ovoga mozemo dodati i:
+            //var username = User.FindFirst(ClaimTypes.Name).Value;
+            // tojest da obrisemo putanju iz HttpGet i argument fje, samo uzmemo njegov username
+
             var basket = await _repository.GetBasket(username);
             return Ok(basket ?? new ShoppingCart(username));
         }
@@ -40,6 +51,12 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != basket.Username)
+            {
+                return Forbid();
+            }
+
+
             foreach (var item in basket.items)
             {
                 try
@@ -62,6 +79,11 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteBasket(string username)
         {
+            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            {
+                return Forbid();
+            }
+
             await _repository.DeleteBasket(username);
             return Ok();
         }
