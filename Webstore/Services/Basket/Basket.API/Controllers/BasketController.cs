@@ -35,7 +35,7 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCart>> GetBasket(string username)
         {
-            if(User.FindFirst(ClaimTypes.Name).Value != username)
+            if(User.FindFirst(ClaimTypes.Name)?.Value != username)
             {
                 return Forbid();
             }
@@ -51,7 +51,7 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != basket.Username)
+            if (User.FindFirst(ClaimTypes.Name)?.Value != basket.Username)
             {
                 return Forbid();
             }
@@ -79,7 +79,7 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<ActionResult> DeleteBasket(string username)
         {
-            if (User.FindFirst(ClaimTypes.Name).Value != username)
+            if (User.FindFirst(ClaimTypes.Name)?.Value != username)
             {
                 return Forbid();
             }
@@ -114,3 +114,4 @@ namespace Basket.API.Controllers
 
     }
 }
+

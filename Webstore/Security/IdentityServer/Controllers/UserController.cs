@@ -33,8 +33,7 @@ namespace IdentityServer.Controllers
             return Ok(_mapper.Map<IEnumerable<UserDetails>>(users));
         }
 
-        [Authorize(Roles = "Administrator")]
-        [Authorize(Roles = "Buyer")]
+        [Authorize(Roles = "Administrator,Buyer")]
         [HttpGet("{username}")]
         [ProducesResponseType(typeof(UserDetails), StatusCodes.Status200OK)]
         public async Task<ActionResult<UserDetails>> GetUser(string username)
@@ -50,5 +49,5 @@ namespace IdentityServer.Controllers
 // da bi radio bilo sta
 // Authorize atribut na nivou jedne funkcije kaze da bi koristio ovaj endpoint moras da budes
 // neka od rola koje treba da imaju autorizaciju za to
-// Ako hoces da ima I ADMIN I BUYER da bi radio nesto pises:
+// Ako hoces da ima ILI ADMIN ILI BUYER da bi radio nesto pises:
         //[Authorize(Roles = "Administrator,Buyer")]
