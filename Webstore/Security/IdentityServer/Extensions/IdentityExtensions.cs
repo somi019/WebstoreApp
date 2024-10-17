@@ -49,6 +49,12 @@ namespace IdentityServer.Extensions
             // Other
             services.AddScoped<IAuthenticationService, AuthenticationService>();
 
+            // CORS, ovako treba za svaki mikroservis
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => 
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
 
             return services;
         }

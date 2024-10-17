@@ -25,6 +25,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// CORS
+app.UseCors("CorsPolicy");
+
 // uvek ovaj redosled prvo auth pa autor
 app.UseAuthentication();
 app.UseAuthorization();
