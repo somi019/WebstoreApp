@@ -1,0 +1,67 @@
+import { Injectable } from '@angular/core';
+import { AppState, IAppState } from './app-state';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Role } from './roles';
+import { LocalStorageService } from '../local-storage/local-storage.service';
+import { LocalStorageKeys } from '../local-storage/local-storage-keys';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AppStateService {
+
+  private appState : AppState = new AppState();
+  private appStateSubject : BehaviorSubject<AppState> = new BehaviorSubject<AppState>(this.appState);
+  private appStateObservable : Observable<AppState> = this.appStateSubject.asObservable();
+
+  constructor(private localStorageService: LocalStorageService) {
+    this.restoreFromLocalStorage();
+   }
+
+  public getAppState() : Observable<AppState>{
+    return this.appStateObservable;
+  }
+
+  public setAccessToken(accessToken: string) : void{
+    this.appState = this.appState.clone();
+    this.appState.accessToken = accessToken;
+    this.appStateSubject.next(this.appState);
+    this.localStorageService.set(LocalStorageKeys.AppState,this.appState);
+  }
+  public setRefreshToken(refreshToken: string) : void{
+    this.appState = this.appState.clone();
+    this.appState.refreshToken = refreshToken;
+    this.appStateSubject.next(this.appState);
+    this.localStorageService.set(LocalStorageKeys.AppState,this.appState);
+  }
+  public setUsername(username: string) : void{
+    this.appState = this.appState.clone();
+    this.appState.username = username;
+    this.appStateSubject.next(this.appState);
+    this.localStorageService.set(LocalStorageKeys.AppState,this.appState);
+  }
+
+  public setEmail(email: string) : void{
+    this.appState = this.appState.clone();
+    this.appState.email = email;
+    this.appStateSubject.next(this.appState);
+    this.localStorageService.set(LocalStorageKeys.AppState,this.appState);
+
+  }
+
+  public setRoles(roles: Role | Role[]) : void{
+    this.appState = this.appState.clone();
+    this.appState.roles = roles;
+    this.appStateSubject.next(this.appState);
+    this.localStorageService.set(LocalStorageKeys.AppState,this.appState);
+
+  }
+
+  private restoreFromLocalStorage() : void{
+    const appState : IAppState | null = this.localStorageService.get(LocalStorageKeys.AppState);
+    if(appState !== null){
+      this.appState = new AppState(appState.accessToken,appState.refreshToken,appState.username,appState.email, appState.roles)
+      this.appStateSubject.next(appState);
+    }
+  }
+}
