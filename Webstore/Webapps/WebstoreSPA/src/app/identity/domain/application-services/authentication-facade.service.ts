@@ -45,6 +45,7 @@ export class AuthenticationFacadeService {
       }),
       catchError((err) => {
         console.log(err);
+        this.appStateService.clearAppState();
         return of(false);
       })
     );

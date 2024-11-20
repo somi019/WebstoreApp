@@ -1,0 +1,36 @@
+<h3>Your information</h3>
+
+<div
+*ngIf="appState$ | async as appState"
+>
+
+    <table
+  class="table table-striped table-bordered"
+  *ngIf="!appState.isEmpty(); else notLoggedIn"
+>
+  <!-- async filter subscribes to the observable and his return value is the value which is emitted from that stream -->
+  <tbody>
+    <tr>
+      <td class="table-active">Username</td>
+      <td>{{ appState.username }}</td>
+    </tr>
+    <tr>
+      <td class="table-active">Email</td>
+      <td>{{ appState.email }}</td>
+    </tr>
+    <tr>
+      <td class="table-active">Name</td>
+      <td>{{ appState.firstName }} {{ appState.lastName }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #notLoggedIn>
+<p >Please 
+    <a routerLink="/identity/login" style="color: rgba(var(--bs-link-color-rgb),var(--bs-link-opacity,1));
+    text-decoration: underline;">login</a>
+     to see your information.</p>
+</ng-template>
+
+</div>
+
