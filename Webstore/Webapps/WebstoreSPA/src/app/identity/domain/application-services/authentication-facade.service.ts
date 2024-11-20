@@ -1,37 +1,49 @@
 import { Injectable } from '@angular/core';
 import { AuthenticationService } from '../infrastructure/authentication.service';
 import { ILoginRequest } from '../models/login-request';
-import { catchError, map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import { ILoginResponse } from '../models/login-response';
 import { AppStateService } from 'src/app/shared/app-state/app-state.service';
 import { log } from 'console';
 import { JwtService } from 'src/app/shared/jwt/jwt.service';
 import { JwtPayloadKeys } from 'src/app/shared/jwt/jwt-payload-keys';
+import { UserFacadeService } from './user-facade.service';
+import { IUserDetails } from '../models/user-details';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthenticationFacadeService {
+  constructor(
+    private authenticationService: AuthenticationService,
+    private appStateService: AppStateService,
+    private jwtService: JwtService,
+    private userService: UserFacadeService
+  ) {}
 
-  constructor(private authenticationService: AuthenticationService, private appStateService : AppStateService, 
-    private jwtService : JwtService) { }
+  public login(username: string, password: string): Observable<boolean> {
+    const request: ILoginRequest = { username, password };
 
-  public login(username: string, password: string):Observable<boolean> {
-    const request: ILoginRequest = {username,password};
-    
     return this.authenticationService.login(request).pipe(
-      map((loginResponse: ILoginResponse) =>{
+      switchMap((loginResponse: ILoginResponse) => {
         this.appStateService.setAccessToken(loginResponse.accessToken);
         this.appStateService.setRefreshToken(loginResponse.refreshToken);
 
         const payload = this.jwtService.parsePayload(loginResponse.accessToken);
         this.appStateService.setUsername(payload[JwtPayloadKeys.Username]);
         this.appStateService.setEmail(payload[JwtPayloadKeys.Email]);
-        this.appStateService.setRoles(payload[JwtPayloadKeys.Role]); 
+        this.appStateService.setRoles(payload[JwtPayloadKeys.Role]);
 
+        return this.userService.getUserDetails(payload[JwtPayloadKeys.Username]);
+      }),
+      map((userDetails : IUserDetails) => {
+        // switchMap da bi vratili Observable koji obradjujemo u ovom mapu
+        this.appStateService.setFirstName(userDetails.firstName);
+        this.appStateService.setLastName(userDetails.lastName);
+        this.appStateService.setUserId(userDetails.id)
         return true;
       }),
-      catchError((err)=>{
+      catchError((err) => {
         console.log(err);
         return of(false);
       })
